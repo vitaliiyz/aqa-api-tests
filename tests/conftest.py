@@ -1,25 +1,35 @@
-import requests
 import pytest
 
-from src.aqa_api.config import BASE_URL, ACCESS_TOKEN
+from src.aqa_api.data_generators import generate_email
+from src.aqa_api.test_data import BASE_USER_DATA
+from src.aqa_api.users_api import get_users, create_user, delete_user
 
 
-def send_request(request_method: str, endpoint: str, headers: dict | None = None):
-    default_headers = {
-        "Accept": "application/json",
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {ACCESS_TOKEN}"
-    }
-
-    if headers is not None:
-        default_headers.update(headers)
-
-    return requests.request(method=request_method, url=f"{BASE_URL}{endpoint}", headers=default_headers)
+@pytest.fixture(scope="module")
+def user_data():
+    data = BASE_USER_DATA.copy()
+    data["email"] = generate_email()
+    return data
 
 
 @pytest.fixture
 def users_rs():
-    rs = send_request("get", "/users")
+    rs = get_users()
     assert rs.status_code == 200
 
     return rs.json()
+
+
+@pytest.fixture
+def created_user(user_data):
+    rs = create_user(user_data)
+    assert rs.status_code == 201
+
+    created_data = rs.json()
+    print("\nUser is created")
+
+    yield created_data
+
+    delete_rs = delete_user(created_data['id'])
+    assert delete_rs.status_code == 204
+    print("\nUser is removed")
