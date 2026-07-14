@@ -36,12 +36,13 @@ def test_get_user(created_user):
 def test_update_user(created_user):
     email = generate_email()
 
-    update_data = {
+    update_data = created_user.copy()
+    update_data.update({
         "name": "New Name",
         "gender": "female",
         "email": email,
         "status": "active"
-    }
+    })
 
     update_rs = update_user(created_user['id'], update_data)
     assert update_rs.status_code == 200, f"The status code is not 200: {update_rs.status_code}\n{update_rs.text}"
