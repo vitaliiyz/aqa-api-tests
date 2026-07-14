@@ -38,5 +38,5 @@ jobs:
       - name: Run tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}
-          API_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: pytest -v
