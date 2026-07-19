@@ -4,3 +4,10 @@ BASE_USER_DATA = {
     "email": None,
     "status": "inactive"
 }
+
+REQUIRED_USER_FIELDS = (
+    "name",
+    "gender",
+    "email",
+    "status",
+)
