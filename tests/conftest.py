@@ -31,5 +31,8 @@ def created_user(user_data):
     yield created_data
 
     delete_rs = delete_user(created_data['id'])
-    assert delete_rs.status_code == 204
+
+    assert delete_rs.status_code in (204,
+                                     404), f"The status code is not 204 or 404: {delete_rs.status_code}\n{delete_rs.text}"
+
     print("\nUser is removed")

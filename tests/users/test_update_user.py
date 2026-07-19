@@ -3,7 +3,7 @@ from src.aqa_api.data_generators import generate_email
 from src.aqa_api.users_api import get_user_by_id, update_user
 
 
-def test_update_user(created_user):
+def test_update_user_success(created_user):
     email = generate_email()
 
     update_data = created_user.copy()
