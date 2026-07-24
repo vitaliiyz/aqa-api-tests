@@ -41,5 +41,3 @@ def test_create_user_with_blank_data(user_data, field):
     rs = create_user(user_data)
     assert rs.status_code == 422, f"The status code is not 422: {rs.status_code} – {rs.text}"
     assert rs.json() == expected_rs, f"{rs.json()} is not equal to expected"
-
-    # TODO: check that user is not created with invalid data
