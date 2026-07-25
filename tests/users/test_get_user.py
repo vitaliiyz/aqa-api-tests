@@ -1,9 +1,10 @@
-import random
-
-from src.aqa_api.users_api import delete_user, get_user_by_id
+from src.aqa_api.users_api import get_user_by_id
 
 
 def test_get_user_success(created_user):
+    """Verify that an existing user can be successfully retrieved by ID
+    and all fields match the full user schema contract.
+    """
     # Act
     response = get_user_by_id(created_user["id"])
 
@@ -12,37 +13,26 @@ def test_get_user_success(created_user):
         f"Expected status code 200, got {response.status_code}.\nResponse: {response.text}"
     )
 
-    actual_user = response.json()
-
-    # Assert Payload Fields / Full Equality
-    assert actual_user["id"] == created_user["id"], (
-        f"Expected ID: {created_user['id']}, actual: {actual_user['id']}"
-    )
-    assert actual_user["name"] == created_user["name"], (
-        f"Expected name: '{created_user['name']}', actual: '{actual_user['name']}'"
-    )
-    assert actual_user["email"] == created_user["email"], (
-        f"Expected email: '{created_user['email']}', actual: '{actual_user['email']}'"
-    )
-    assert actual_user == created_user, (
-        f"Expected user data: {created_user}. Actual user data: {actual_user}"
+    # Assert Full Schema/Payload Equality (covers id, name, email, gender, status)
+    assert response.json() == created_user, (
+        f"Expected user data: {created_user}. Actual user data: {response.json()}"
     )
 
 
-def test_get_nonexistent_user_returns_404(created_user):
-    user_id = created_user["id"]
+def test_get_nonexistent_user_returns_404():
+    """Verify that requesting a non-existent user ID returns a 404 status
+    independently without mutating or deleting shared test resources.
+    """
+    non_existent_id = 999999999
+    expected_response = {"message": "Resource not found"}
 
-    delete_rs = delete_user(user_id)
-    assert delete_rs.status_code == 204, (
-        f"The status code is not 204: {delete_rs.status_code}\n{delete_rs.text}"
-    )
+    # Act
+    response = get_user_by_id(non_existent_id)
 
-    expected_rs = {"message": "Resource not found"}
-
-    response = get_user_by_id(user_id)
+    # Assert
     assert response.status_code == 404, (
         f"Expected status code 404 for non-existent user, got {response.status_code}.\nResponse: {response.text}"
     )
-    assert response.json() == expected_rs, (
-        f"Actual response is not equal to expected: {response.json()}"
+    assert response.json() == expected_response, (
+        f"Expected response: {expected_response}, got {response.json()}"
     )
