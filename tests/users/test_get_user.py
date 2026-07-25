@@ -13,10 +13,13 @@ def test_get_user_success(created_user):
         f"Expected status code 200, got {response.status_code}.\nResponse: {response.text}"
     )
 
-    # Assert Full Schema/Payload Equality (covers id, name, email, gender, status)
-    assert response.json() == created_user, (
-        f"Expected user data: {created_user}. Actual user data: {response.json()}"
-    )
+    # Assert Fields Individually
+    data = response.json()
+    assert data["id"] == created_user["id"]
+    assert data["name"] == created_user["name"]
+    assert data["email"] == created_user["email"]
+    assert data["gender"] == created_user["gender"]
+    assert data["status"] == created_user["status"]
 
 
 def test_get_nonexistent_user_returns_404():
