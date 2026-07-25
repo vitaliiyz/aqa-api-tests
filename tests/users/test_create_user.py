@@ -1,3 +1,6 @@
+import pytest
+
+from src.aqa_api.test_data import REQUIRED_USER_FIELDS
 from src.aqa_api.users_api import get_users, create_user, delete_user
 
 
@@ -22,3 +25,19 @@ def test_create_user_success(user_data):
         if created_user_data:
             delete_rs = delete_user(created_user_data['id'])
             assert delete_rs.status_code == 204, f"The status code is not 201: {delete_rs.status_code} – {delete_rs.text}"
+
+
+@pytest.mark.parametrize("field", REQUIRED_USER_FIELDS)
+def test_create_user_with_blank_data(user_data, field):
+    user_data[field] = ""
+    expected_rs = [
+        {
+            "field": field,
+            "message":
+                "can't be blank, can be male of female" if field == "gender" else "can't be blank"
+        }
+    ]
+
+    rs = create_user(user_data)
+    assert rs.status_code == 422, f"The status code is not 422: {rs.status_code} – {rs.text}"
+    assert rs.json() == expected_rs, f"{rs.json()} is not equal to expected"
