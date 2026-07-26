@@ -11,3 +11,5 @@ REQUIRED_USER_FIELDS = (
     "email",
     "status",
 )
+
+NON_EXISTING_USER_ID = 999999999
