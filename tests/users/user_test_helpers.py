@@ -1,10 +1,9 @@
-def non_existent_user_test(func):
+def non_existent_user_test(send_func, user_id):
     """Used for non-existing user tests"""
-    non_existent_id = 999999999
     expected_response = {"message": "Resource not found"}
 
     # Act
-    response = func(non_existent_id)
+    response = send_func(user_id)
 
     # Assert
     assert response.status_code == 404, (

@@ -1,8 +1,12 @@
+from src.aqa_api.test_data import NON_EXISTING_USER_ID
 from src.aqa_api.users_api import delete_user, get_user_by_id, get_users
-from utils.helpers import non_existent_user_test
+from tests.users.user_test_helpers import non_existent_user_test
 
 
 def test_delete_user_success(created_user):
+    """
+    Verify that deleting an existing user returns a 204 status code and that the deleted user no longer appears in the GET users response.
+    """
     user_id = created_user['id']
 
     delete_rs = delete_user(user_id)
@@ -20,4 +24,4 @@ def test_delete_nonexistent_user_returns_404():
     """Verify that deleting a non-existent user ID returns a 404 status
     independently without mutating or deleting shared test resources.
     """
-    non_existent_user_test(get_user_by_id)
+    non_existent_user_test(get_user_by_id, NON_EXISTING_USER_ID)
