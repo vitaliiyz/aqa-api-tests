@@ -1,4 +1,6 @@
+from src.aqa_api.test_data import NON_EXISTING_USER_ID
 from src.aqa_api.users_api import get_user_by_id
+from tests.users.user_test_helpers import non_existent_user_test
 
 
 def test_get_user_success(created_user):
@@ -26,16 +28,4 @@ def test_get_nonexistent_user_returns_404():
     """Verify that requesting a non-existent user ID returns a 404 status
     independently without mutating or deleting shared test resources.
     """
-    non_existent_id = 999999999
-    expected_response = {"message": "Resource not found"}
-
-    # Act
-    response = get_user_by_id(non_existent_id)
-
-    # Assert
-    assert response.status_code == 404, (
-        f"Expected status code 404 for non-existent user, got {response.status_code}.\nResponse: {response.text}"
-    )
-    assert response.json() == expected_response, (
-        f"Expected response: {expected_response}, got {response.json()}"
-    )
+    non_existent_user_test(get_user_by_id, NON_EXISTING_USER_ID)

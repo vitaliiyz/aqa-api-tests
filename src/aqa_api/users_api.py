@@ -1,9 +1,8 @@
 from src.aqa_api.api_client import send_request
 
 
-def get_users(headers: dict = None):
-    return send_request("get", "/users", headers=headers)
-
+def get_users(params: dict | None = None, headers: dict | None = None):
+    return send_request("get", "/users", params=params, headers=headers)
 
 def get_user_by_id(user_id: int, headers: dict = None):
     return send_request("get", f"/users/{user_id}", headers=headers)
