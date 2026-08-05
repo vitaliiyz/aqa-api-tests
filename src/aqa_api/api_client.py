@@ -4,11 +4,11 @@ from src.aqa_api.config import ACCESS_TOKEN, BASE_URL, REQUEST_TIMEOUT
 
 
 def send_request(
-        request_method: str,
-        endpoint: str,
-        headers: dict | None = None,
-        request_body: dict | None = None,
-        params: dict | None = None,
+    request_method: str,
+    endpoint: str,
+    headers: dict | None = None,
+    request_body: dict | None = None,
+    params: dict | None = None,
 ) -> requests.Response:
     """
     Sends an HTTP request to the specified endpoint with optional body, params, and headers.

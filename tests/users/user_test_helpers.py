@@ -1,7 +1,7 @@
 def non_existent_user_test(
-        send_func,
-        user_id,
-        request_data: dict = None,
+    send_func,
+    user_id,
+    request_data: dict | None = None,
 ):
     """Used for non-existing user tests"""
     expected_response = {"message": "Resource not found"}
@@ -13,9 +13,9 @@ def non_existent_user_test(
         response = send_func(user_id, request_data)
 
     # Assert
-    assert response.status_code == 404, (
-        f"Expected status code 404 for non-existent user, got {response.status_code}.\nResponse: {response.text}"
-    )
-    assert response.json() == expected_response, (
-        f"Expected response: {expected_response}, got {response.json()}"
-    )
+    assert (
+        response.status_code == 404
+    ), f"Expected status code 404 for non-existent user, got {response.status_code}.\nResponse: {response.text}"
+    assert (
+        response.json() == expected_response
+    ), f"Expected response: {expected_response}, got {response.json()}"
