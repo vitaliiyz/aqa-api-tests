@@ -1,9 +1,16 @@
-def non_existent_user_test(send_func, user_id):
+def non_existent_user_test(
+        send_func,
+        user_id,
+        request_data: dict = None,
+):
     """Used for non-existing user tests"""
     expected_response = {"message": "Resource not found"}
 
     # Act
-    response = send_func(user_id)
+    if request_data is None:
+        response = send_func(user_id)
+    else:
+        response = send_func(user_id, request_data)
 
     # Assert
     assert response.status_code == 404, (
