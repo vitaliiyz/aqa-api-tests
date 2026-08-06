@@ -1,5 +1,6 @@
 import requests
-from src.aqa_api.config import ACCESS_TOKEN, BASE_URL
+
+from src.aqa_api.config import ACCESS_TOKEN, BASE_URL, REQUEST_TIMEOUT
 
 
 def send_request(
@@ -30,4 +31,5 @@ def send_request(
         headers=request_headers,
         json=request_body,
         params=params,
+        timeout=REQUEST_TIMEOUT,
     )

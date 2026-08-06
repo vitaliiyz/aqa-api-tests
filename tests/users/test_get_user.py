@@ -11,9 +11,9 @@ def test_get_user_success(created_user):
     response = get_user_by_id(created_user["id"])
 
     # Assert Status Code
-    assert response.status_code == 200, (
-        f"Expected status code 200, got {response.status_code}.\nResponse: {response.text}"
-    )
+    assert (
+        response.status_code == 200
+    ), f"Expected status code 200, got {response.status_code}.\nResponse: {response.text}"
 
     # Assert Fields Individually
     data = response.json()

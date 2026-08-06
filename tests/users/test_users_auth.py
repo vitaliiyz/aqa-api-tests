@@ -1,4 +1,3 @@
-import pytest
 from src.aqa_api.users_api import (
     create_user,
     delete_user,
@@ -18,9 +17,9 @@ def test_create_user_without_token_returns_401(user_data):
     )
 
     actual_json = response.json()
-    assert actual_json.get("message") == "Authentication failed", (
-        f"Expected 'Authentication failed' error message, got {actual_json}"
-    )
+    assert (
+        actual_json.get("message") == "Authentication failed"
+    ), f"Expected 'Authentication failed' error message, got {actual_json}"
 
 
 def test_create_user_with_invalid_token_returns_401(user_data):
@@ -45,9 +44,9 @@ def test_delete_user_without_token_returns_404(created_user):
     )
 
     actual_json = response.json()
-    assert actual_json.get("message") == "Resource not found", (
-        f"Expected 'Resource not found' error message, got {actual_json}"
-    )
+    assert (
+        actual_json.get("message") == "Resource not found"
+    ), f"Expected 'Resource not found' error message, got {actual_json}"
 
 
 def test_update_user_without_token_returns_404(created_user):
@@ -62,9 +61,9 @@ def test_update_user_without_token_returns_404(created_user):
     )
 
     actual_json = response.json()
-    assert actual_json.get("message") == "Resource not found", (
-        f"Expected 'Resource not found' error message, got {actual_json}"
-    )
+    assert (
+        actual_json.get("message") == "Resource not found"
+    ), f"Expected 'Resource not found' error message, got {actual_json}"
 
 
 def test_get_users_allowed_without_token():
@@ -87,6 +86,6 @@ def test_get_single_user_without_token_returns_404(created_user):
     )
 
     actual_json = response.json()
-    assert actual_json.get("message") == "Resource not found", (
-        f"Expected 'Resource not found' error message, got {actual_json}"
-    )
+    assert (
+        actual_json.get("message") == "Resource not found"
+    ), f"Expected 'Resource not found' error message, got {actual_json}"
