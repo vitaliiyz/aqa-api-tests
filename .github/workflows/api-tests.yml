@@ -2,9 +2,11 @@ name: API tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -12,6 +14,7 @@ permissions:
 
 jobs:
   tests:
+    name: API Tests & Quality Checks
     runs-on: ubuntu-latest
     timeout-minutes: 5
 
@@ -41,7 +44,7 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
-          pytest -v --html=report.html --self-contained-html --md-report --md-report-file=summary.md
+          pytest -v --html=report.html --self-contained-html --md-report --md-report-output=summary.md
 
       - name: Publish Job Summary
         if: always()
