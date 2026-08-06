@@ -1,6 +1,8 @@
 # AQA API Tests
 
-A Python API test automation project for the [GoREST Users API](https://gorest.co.in/). The repository demonstrates automated REST API testing of user CRUD operations, input validation, authentication behavior, and query filtering. It is structured as a small reusable test framework rather than a collection of direct HTTP calls inside tests.
+A Python API test automation project for the [GoREST Users API](https://gorest.co.in/). The repository demonstrates
+automated REST API testing of user CRUD operations, input validation, authentication behavior, and query filtering. It
+is structured as a small reusable test framework rather than a collection of direct HTTP calls inside tests.
 
 ## Technology stack
 
@@ -8,7 +10,8 @@ A Python API test automation project for the [GoREST Users API](https://gorest.c
 - **Pytest 9.0.3** — test runner, fixtures, assertions, and parametrized validation checks.
 - **Requests 2.33.1** — HTTP client for REST API calls.
 - **python-dotenv 1.2.2** — loads local API configuration from `.env`.
-- **GitHub Actions** — installs dependencies and runs the suite on pushes and pull requests to `main`, with optional manual execution.
+- **GitHub Actions** — installs dependencies and runs the suite on pushes and pull requests to `main`, with optional
+  manual execution.
 
 Dependency versions are pinned in `requirements.txt`.
 
@@ -26,7 +29,8 @@ The suite contains 19 discovered tests covering:
 - public access to the users list without a token;
 - filtering users by status and partial name.
 
-Tests validate HTTP status codes and JSON response content. Tests that create data generate unique email addresses and clean up created users after execution.
+Tests validate HTTP status codes and JSON response content. Tests that create data generate unique email addresses and
+clean up created users after execution.
 
 ## Project structure
 
@@ -46,7 +50,8 @@ Tests validate HTTP status codes and JSON response content. Tests that create da
     └── users/                       # CRUD, validation, auth, and filter tests
 ```
 
-The request layer is separated from test logic: `api_client.py` builds and sends requests, while `users_api.py` exposes endpoint-specific functions used by the tests.
+The request layer is separated from test logic: `api_client.py` builds and sends requests, while `users_api.py` exposes
+endpoint-specific functions used by the tests.
 
 ## Setup and execution
 
@@ -101,4 +106,9 @@ python -m pytest -v
 
 ## CI
 
-The `API tests` GitHub Actions workflow runs on pushes and pull requests targeting `main`, and through manual dispatch. It uses Ubuntu and Python 3.11, restores the pip cache, installs `requirements.txt`, and executes `pytest -v`. `BASE_URL` and `ACCESS_TOKEN` are supplied through GitHub repository secrets. No test-report publishing or artifact upload is currently configured.
+The `API tests` GitHub Actions workflow runs on pushes and pull requests targeting `main`, and through manual dispatch.
+It uses Ubuntu and Python 3.11, restores the pip cache, installs pinned dependencies, checks code formatting with Black,
+runs Ruff linting, and executes the complete Pytest suite.
+
+`BASE_URL` and `ACCESS_TOKEN` are supplied through GitHub repository
+secrets. No test-report publishing or artifact upload is currently configured.
