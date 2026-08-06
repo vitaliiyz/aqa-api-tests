@@ -1,3 +1,4 @@
+black==24.4.2
 certifi==2026.4.22
 charset-normalizer==3.4.7
 idna==3.13
@@ -8,4 +9,5 @@ Pygments==2.20.0
 pytest==9.0.3
 python-dotenv==1.2.2
 requests==2.33.1
+ruff==0.9.4
 urllib3==2.6.3

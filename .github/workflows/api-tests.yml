@@ -4,11 +4,9 @@ on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main
-
   workflow_dispatch:
 
 permissions:
@@ -36,7 +34,6 @@ jobs:
 
       - name: Run code format & lint checks
         run: |
-          pip install ruff black
           black --check .
           ruff check .
 
