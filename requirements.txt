@@ -6,8 +6,10 @@ iniconfig==2.3.0
 packaging==26.2
 pluggy==1.6.0
 Pygments==2.20.0
-pytest==9.0.3
+pytest==8.3.5
+pytest-html==4.1.1
+pytest-md-report==0.6.2
 python-dotenv==1.2.2
 requests==2.33.1
-ruff==0.9.4
+ruff==0.4.4
 urllib3==2.6.3
