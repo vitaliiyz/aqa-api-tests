@@ -37,7 +37,7 @@ def test_create_user_success(user_data):
             delete_rs = delete_user(created_user_data["id"])
             assert (
                 delete_rs.status_code == 204
-            ), f"The status code is not 201: {delete_rs.status_code} – {delete_rs.text}"
+            ), f"The status code is not 204: {delete_rs.status_code} – {delete_rs.text}"
 
 
 @pytest.mark.parametrize("field", REQUIRED_USER_FIELDS)

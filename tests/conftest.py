@@ -17,7 +17,7 @@ def users_rs():
     rs = get_users()
     assert (
         rs.status_code == 200
-    ), f"The status code is not 200: {users_rs.status_code}\n{users_rs.text}"
+    ), f"The status code is not 200: {rs.status_code}\n{rs.text}"
 
     return rs.json()
 

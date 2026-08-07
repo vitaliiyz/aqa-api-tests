@@ -32,4 +32,4 @@ def test_delete_nonexistent_user_returns_404():
     """Verify that deleting a non-existent user ID returns a 404 status
     independently without mutating or deleting shared test resources.
     """
-    non_existent_user_test(get_user_by_id, NON_EXISTING_USER_ID)
+    non_existent_user_test(delete_user, NON_EXISTING_USER_ID)
