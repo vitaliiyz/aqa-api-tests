@@ -5,9 +5,7 @@ from src.aqa_api.users_api import create_user, delete_user, get_users
 
 
 def test_create_user_success(user_data):
-    """
-    Verify that creating a user returns a 201 status code, that the created user contains the expected data, and that the user appears in the GET users response.
-    """
+    """Verify that creating a user returns 201 Created, contains expected fields, and appears in the user list."""
     created_user_data = None
 
     try:
@@ -27,6 +25,7 @@ def test_create_user_success(user_data):
         assert (
             get_users_rs.status_code == 200
         ), f"The status code is not 200: {get_users_rs.status_code}\n{get_users_rs.text}"
+
         get_users_rs_data = get_users_rs.json()
         assert (
             created_user_data in get_users_rs_data
@@ -41,10 +40,8 @@ def test_create_user_success(user_data):
 
 
 @pytest.mark.parametrize("field", REQUIRED_USER_FIELDS)
-def test_create_user_with_blank_data(user_data, field):
-    """
-    Verify that creating a user with blank data returns a 422 status code and that the response matches the expected error message.
-    """
+def test_create_user_missing_required_field_returns_422(user_data, field):
+    """Verify that creating a user with a blank required field returns 422 Unprocessable Entity."""
     user_data[field] = ""
     expected_rs = [
         {

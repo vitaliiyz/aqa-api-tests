@@ -66,7 +66,7 @@ def test_update_user_without_token_returns_404(created_user):
     ), f"Expected 'Resource not found' error message, got {actual_json}"
 
 
-def test_get_users_allowed_without_token():
+def test_get_users_without_token_returns_200():
     """Public read access: GET /users is accessible without token (200 OK)"""
     response = get_users(headers={})
 
@@ -76,7 +76,7 @@ def test_get_users_allowed_without_token():
     )
 
 
-def test_get_single_user_without_token_returns_404(created_user):
+def test_get_user_without_token_returns_404(created_user):
     """GET /users/{id} without token returns 404 in GoRest API for unauthenticated scoping"""
     response = get_user_by_id(created_user["id"], headers={})
 
