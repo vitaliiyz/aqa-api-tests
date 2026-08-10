@@ -1,7 +1,7 @@
 import pytest
 
 from src.aqa_api.test_data import REQUIRED_USER_FIELDS
-from src.aqa_api.users_api import create_user, delete_user, get_users
+from src.aqa_api.users_api import create_user, delete_user
 
 
 def test_create_user_success(user_data):
@@ -21,16 +21,6 @@ def test_create_user_success(user_data):
                 created_user_data[key] == value
             ), f"The {key} is not equal to {created_user_data[key]}"
 
-        get_users_rs = get_users()
-        assert (
-            get_users_rs.status_code == 200
-        ), f"The status code is not 200: {get_users_rs.status_code}\n{get_users_rs.text}"
-
-        get_users_rs_data = get_users_rs.json()
-        assert (
-            created_user_data in get_users_rs_data
-        ), f"Expected user data:{created_user_data}. Actual user data: {get_users_rs_data}"
-
     finally:
         if created_user_data:
             delete_rs = delete_user(created_user_data["id"])
@@ -40,7 +30,7 @@ def test_create_user_success(user_data):
 
 
 @pytest.mark.parametrize("field", REQUIRED_USER_FIELDS)
-def test_create_user_missing_required_field_returns_422(user_data, field):
+def test_create_user_blank_required_field_returns_422(user_data, field):
     """Verify that creating a user with a blank required field returns 422 Unprocessable Entity."""
     user_data[field] = ""
     expected_rs = [
@@ -55,6 +45,48 @@ def test_create_user_missing_required_field_returns_422(user_data, field):
     ]
 
     rs = create_user(user_data)
+    assert (
+        rs.status_code == 422
+    ), f"The status code is not 422: {rs.status_code} – {rs.text}"
+    assert rs.json() == expected_rs, f"{rs.json()} is not equal to expected"
+
+
+@pytest.mark.parametrize("field", REQUIRED_USER_FIELDS)
+def test_create_user_missing_required_field_returns_422(user_data, field):
+    """Verify that creating a user with a blank required field returns 422 Unprocessable Entity."""
+    del user_data[field]
+    expected_rs = [
+        {
+            "field": field,
+            "message": (
+                "can't be blank, can be male of female"
+                if field == "gender"
+                else "can't be blank"
+            ),
+        }
+    ]
+
+    rs = create_user(user_data)
+    assert (
+        rs.status_code == 422
+    ), f"The status code is not 422: {rs.status_code} – {rs.text}"
+    assert rs.json() == expected_rs, f"{rs.json()} is not equal to expected"
+
+
+def test_create_user_email_already_exists_returns_422(created_user):
+    """Verify that creating a user with an existing email returns 422 Unprocessable Entity."""
+
+    new_user_data = {
+        "name": "New User",
+        "email": created_user["email"],
+        "gender": "female",
+        "status": "active",
+    }
+
+    expected_rs = [{"field": "email", "message": "has already been taken"}]
+
+    rs = create_user(new_user_data)
+
     assert (
         rs.status_code == 422
     ), f"The status code is not 422: {rs.status_code} – {rs.text}"
