@@ -7,7 +7,7 @@ is structured as a small reusable test framework rather than a collection of dir
 ## Technology stack
 
 - **Python 3.11** — runtime used by the CI workflow.
-- **Pytest 9.0.3** — test runner, fixtures, assertions, and parametrized validation checks.
+- **Pytest 8.3.5** — test runner, fixtures, assertions, and parametrized validation checks.
 - **Requests 2.33.1** — HTTP client for REST API calls.
 - **python-dotenv 1.2.2** — loads local API configuration from `.env`.
 - **GitHub Actions** — installs dependencies and runs the suite on pushes and pull requests to `main`, with optional
@@ -82,11 +82,13 @@ Install the pinned dependencies:
 python -m pip install -r requirements.txt
 ```
 
-Copy `.env.example` to `.env` and provide the GoREST API URL and your own access token. Do not commit this file.
+Copy `.env.example` to `.env` and provide the GoREST API URL and your own access token. The request timeout is
+optional and defaults to 10 seconds when omitted. Do not commit this file.
 
 ```dotenv
 BASE_URL=https://gorest.co.in/public/v2
 ACCESS_TOKEN=YOUR_API_TOKEN
+REQUEST_TIMEOUT=15
 ```
 
 Run the complete suite from the repository root:
@@ -110,5 +112,6 @@ The `API tests` GitHub Actions workflow runs on pushes and pull requests targeti
 It uses Ubuntu and Python 3.11, restores the pip cache, installs pinned dependencies, checks code formatting with Black,
 runs Ruff linting, and executes the complete Pytest suite.
 
-`BASE_URL` and `ACCESS_TOKEN` are supplied through GitHub repository
-secrets. No test-report publishing or artifact upload is currently configured.
+`BASE_URL` and `ACCESS_TOKEN` are supplied through GitHub repository secrets. After the test run, the workflow adds a
+Markdown report to the GitHub Actions job summary and uploads a self-contained HTML report as the `pytest-api-report`
+artifact.
