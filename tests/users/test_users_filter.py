@@ -16,6 +16,7 @@ def test_filter_users_by_status():
 
     users = response.json()
     assert isinstance(users, list), "Response data should be a list"
+    assert users, "Expected at least one user, but response is empty"
 
     for user in users:
         assert (
