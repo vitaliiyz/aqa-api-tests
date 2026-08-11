@@ -12,6 +12,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   tests:
@@ -77,3 +79,25 @@ jobs:
         with:
           name: allure-api-report
           path: allure-report
+
+      - name: Upload Allure Report for GitHub Pages
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/add-allure-report')
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: allure-report
+
+  deploy:
+    name: Deploy Allure Report
+    needs: tests
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/add-allure-report')
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
