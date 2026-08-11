@@ -13,3 +13,5 @@ python-dotenv==1.2.2
 requests==2.33.1
 ruff==0.4.4
 urllib3==2.6.3
+allure-pytest==2.16.0
+allure-python-commons==2.16.0
