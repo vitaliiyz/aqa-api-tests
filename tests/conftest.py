@@ -2,7 +2,7 @@ import pytest
 
 from src.aqa_api.data_generators import generate_email
 from src.aqa_api.test_data import BASE_USER_DATA
-from src.aqa_api.users_api import create_user, delete_user, get_users
+from src.aqa_api.users_api import create_user, delete_user
 
 
 @pytest.fixture(scope="function")
@@ -10,16 +10,6 @@ def user_data():
     data = BASE_USER_DATA.copy()
     data["email"] = generate_email()
     return data
-
-
-@pytest.fixture
-def users_rs():
-    rs = get_users()
-    assert (
-        rs.status_code == 200
-    ), f"The status code is not 200: {rs.status_code}\n{rs.text}"
-
-    return rs.json()
 
 
 @pytest.fixture
