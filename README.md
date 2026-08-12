@@ -23,15 +23,15 @@ Dependency versions are pinned in `requirements.txt`.
 
 The suite contains 24 test cases covering:
 
-- creating a user and validating the returned user data;
-- retrieving an existing user by ID and validating its returned fields;
-- updating all user fields and confirming the changes with a subsequent GET request;
-- deleting a user and confirming it can no longer be retrieved by ID;
-- `404` responses and error bodies for non-existent user IDs;
-- blank and missing required-field validation for name, gender, email, and status through Pytest parametrization;
-- requests with missing or invalid authorization tokens, including the API's endpoint-specific behavior;
-- public access to the users list without a token;
-- filtering users by status and partial name.
+- [x] creating a user and validating the returned user data;
+- [x] retrieving an existing user by ID and validating its returned fields;
+- [x] updating all user fields and confirming the changes with a subsequent GET request;
+- [x] deleting a user and confirming it can no longer be retrieved by ID;
+- [x] `404` responses and error bodies for non-existent user IDs;
+- [x] blank and missing required-field validation for name, gender, email, and status through Pytest parametrization;
+- [x] requests with missing or invalid authorization tokens, including the API's endpoint-specific behavior;
+- [x] public access to the users list without a token;
+- [x] filtering users by status and partial name.
 
 Tests validate HTTP status codes and JSON response content. Tests that create data generate unique email addresses and
 clean up created users after execution.
