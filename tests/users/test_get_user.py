@@ -4,9 +4,7 @@ from tests.users.user_test_helpers import non_existent_user_test
 
 
 def test_get_user_success(created_user):
-    """Verify that an existing user can be successfully retrieved by ID
-    and all fields match the full user schema contract.
-    """
+    """Verify that an existing user can be retrieved by ID and returned fields match the created user data."""
     # Act
     response = get_user_by_id(created_user["id"])
 

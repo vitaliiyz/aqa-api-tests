@@ -5,7 +5,7 @@ from src.aqa_api.users_api import create_user, delete_user
 
 
 def test_create_user_success(user_data):
-    """Verify that creating a user returns 201 Created, contains expected fields, and appears in the user list."""
+    """Verify that creating a user returns 201 and returned fields match request data."""
     created_user_data = None
 
     try:

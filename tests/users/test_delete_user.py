@@ -5,7 +5,7 @@ from tests.users.user_test_helpers import non_existent_user_test
 
 def test_delete_user_success(created_user):
     """
-    Verify that deleting an existing user returns a 204 status code and that the deleted user no longer appears in the GET users response.
+    Verify that deleting an existing user returns 204, and it can no longer be retrieved by ID.
     """
     user_id = created_user["id"]
 

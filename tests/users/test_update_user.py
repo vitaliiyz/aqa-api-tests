@@ -8,12 +8,18 @@ def test_update_user_success(created_user):
     """
     Verify that updating an existing user returns a 200 status code and that the updated user data matches the expected data.
     """
-    email = generate_email()
 
-    update_data = created_user.copy()
-    update_data.update(
-        {"name": "New Name", "gender": "female", "email": email, "status": "active"}
-    )
+    update_data = {
+        "name": "New Name",
+        "gender": "female",
+        "email": generate_email(),
+        "status": "active",
+    }
+
+    expected_data = {
+        "id": created_user["id"],
+        **update_data,
+    }
 
     update_rs = update_user(created_user["id"], update_data)
     assert (
@@ -21,8 +27,8 @@ def test_update_user_success(created_user):
     ), f"The status code is not 200: {update_rs.status_code}\n{update_rs.text}"
     update_rs_data = update_rs.json()
     assert (
-        update_rs_data == update_data
-    ), f"User data in Update response: {update_rs_data} is not equal to expected:\n{update_data}"
+        update_rs_data == expected_data
+    ), f"User data in Update response: {update_rs_data} is not equal to expected:\n{expected_data}"
 
     get_user_by_id_rs = get_user_by_id(created_user["id"])
     assert (
@@ -30,8 +36,8 @@ def test_update_user_success(created_user):
     ), f"The status code is not 200: {get_user_by_id_rs.status_code}"
     get_user_by_id_rs_data = get_user_by_id_rs.json()
     assert (
-        get_user_by_id_rs_data == update_data
-    ), f"User data in Get User By Id response: {get_user_by_id_rs_data} is not equal to expected:\n{update_data}"
+        get_user_by_id_rs_data == expected_data
+    ), f"User data in Get User By Id response: {get_user_by_id_rs_data} is not equal to expected:\n{expected_data}"
 
 
 def test_update_nonexistent_user_returns_404():
