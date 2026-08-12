@@ -1,12 +1,25 @@
+# Ignore IDE files
 .idea
+
+# Ignore virtual environment directories
 .venv
 venv
+
+# Ignore Python cache files
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 .pytest_cache/
+
+# Ignore macOS system files
 .DS_Store
+
+# Ignore environment variable files
 .env
 .env.*
 !.env.example
+
+# Allure report files
+allure-report/
+allure-results/

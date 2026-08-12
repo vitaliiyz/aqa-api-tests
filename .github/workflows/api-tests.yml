@@ -11,6 +11,8 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   tests:
@@ -44,7 +46,12 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
-          pytest -v --html=report.html --self-contained-html --md-report --md-report-output=summary.md
+          pytest -v --html=report.html \
+          --self-contained-html \
+          --md-report \
+          --md-report-output=summary.md \
+          --alluredir=allure-results \
+          --clean-alluredir
 
       - name: Publish Job Summary
         if: always()
@@ -56,3 +63,40 @@ jobs:
         with:
           name: pytest-api-report
           path: report.html
+
+      - name: Install Allure CLI
+        if: always()
+        run: npm install --global allure-commandline
+
+      - name: Generate Allure Report
+        if: always()
+        run: allure generate allure-results --clean --output allure-report
+
+      - name: Upload Allure Report Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-api-report
+          path: allure-report
+
+      - name: Upload Allure Report for GitHub Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: allure-report
+
+  deploy:
+    name: Deploy Allure Report
+    needs: tests
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
