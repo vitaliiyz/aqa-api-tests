@@ -9,22 +9,26 @@ is structured as a small reusable test framework rather than a collection of dir
 - **Python 3.11** — runtime used by the CI workflow.
 - **Pytest 8.3.5** — test runner, fixtures, assertions, and parametrized validation checks.
 - **Requests 2.33.1** — HTTP client for REST API calls.
+- **Allure Pytest 2.16.0** — generates interactive test reports.
+- **pytest-html 4.1.1** — generates standalone HTML test reports.
+- **pytest-md-report 0.6.2** — generates test summaries for GitHub Actions.
+- **Black 24.4.2** — code formatting checks.
+- **Ruff 0.4.4** — Python linting.
 - **python-dotenv 1.2.2** — loads local API configuration from `.env`.
-- **GitHub Actions** — installs dependencies and runs the suite on pushes and pull requests to `main`, with optional
-  manual execution.
+- **GitHub Actions** — CI execution and Allure report deployment.
 
 Dependency versions are pinned in `requirements.txt`.
 
 ## Test coverage
 
-The suite contains 19 discovered tests covering:
+The suite contains 24 test cases covering:
 
-- creating a user and verifying the response and presence in the users list;
+- creating a user and validating the returned user data;
 - retrieving an existing user by ID and validating its returned fields;
 - updating all user fields and confirming the changes with a subsequent GET request;
-- deleting a user and confirming it can no longer be retrieved or listed;
+- deleting a user and confirming it can no longer be retrieved by ID;
 - `404` responses and error bodies for non-existent user IDs;
-- required-field validation for name, gender, email, and status through Pytest parametrization;
+- blank and missing required-field validation for name, gender, email, and status through Pytest parametrization;
 - requests with missing or invalid authorization tokens, including the API's endpoint-specific behavior;
 - public access to the users list without a token;
 - filtering users by status and partial name.
@@ -48,6 +52,9 @@ clean up created users after execution.
 └── tests/
     ├── conftest.py                  # Test data and lifecycle fixtures
     └── users/                       # CRUD, validation, auth, and filter tests
+        ├── test_*.py                  # User API test modules
+        └── user_test_helpers.py       # Shared user test helpers
+    
 ```
 
 The request layer is separated from test logic: `api_client.py` builds and sends requests, while `users_api.py` exposes
@@ -109,9 +116,16 @@ python -m pytest -v
 ## CI
 
 The `API tests` GitHub Actions workflow runs on pushes and pull requests targeting `main`, and through manual dispatch.
-It uses Ubuntu and Python 3.11, restores the pip cache, installs pinned dependencies, checks code formatting with Black,
-runs Ruff linting, and executes the complete Pytest suite.
 
-`BASE_URL` and `ACCESS_TOKEN` are supplied through GitHub repository secrets. After the test run, the workflow adds a
-Markdown report to the GitHub Actions job summary and uploads a self-contained HTML report as the `pytest-api-report`
-artifact.
+The workflow:
+
+- installs pinned dependencies;
+- checks code formatting with Black;
+- runs Ruff linting;
+- executes the complete Pytest suite;
+- publishes a Markdown test summary in GitHub Actions;
+- uploads a self-contained HTML Pytest report as an artifact;
+- generates and uploads an Allure report as an artifact;
+- publishes the Allure report to GitHub Pages after pushes to `main`.
+
+`BASE_URL` and `ACCESS_TOKEN` are supplied through GitHub repository secrets.

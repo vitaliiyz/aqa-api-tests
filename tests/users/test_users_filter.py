@@ -42,6 +42,7 @@ def test_filter_users_by_name():
 
     filtered_users = response.json()
     assert isinstance(filtered_users, list)
+    assert filtered_users, "Expected at least one user, but response is empty"
 
     for user in filtered_users:
         assert (

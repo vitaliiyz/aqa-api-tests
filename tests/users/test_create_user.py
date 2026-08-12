@@ -53,7 +53,7 @@ def test_create_user_blank_required_field_returns_422(user_data, field):
 
 @pytest.mark.parametrize("field", REQUIRED_USER_FIELDS)
 def test_create_user_missing_required_field_returns_422(user_data, field):
-    """Verify that creating a user with a blank required field returns 422 Unprocessable Entity."""
+    """Verify that creating a user with a missing required field returns 422 Unprocessable Entity."""
     del user_data[field]
     expected_rs = [
         {
